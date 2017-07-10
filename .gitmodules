@@ -1,3 +1,6 @@
 [submodule "makd"]
 	path = submodules/makd
 	url = git@github.com:sociomantic-tsunami/makd.git
+[submodule "ocean"]
+	path = submodules/ocean
+	url = git@github.com:sociomantic-tsunami/ocean.git
