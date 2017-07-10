@@ -1,0 +1,39 @@
+//import std.algorithm.iteration : map;
+//import std.array : join;
+import std.conv : to; 
+import std.stdio : write;
+import std.format;
+
+void setOp (T...) (T arguments)
+{
+    immutable string newline = "\r\n";
+
+    write("*", arguments.length, newline); // Number of arguments
+
+    foreach (arg; arguments)
+    {
+        write("$", arg.length, newline); // length of the argument
+        write(arg, newline);             // name of the argument
+    }
+
+    // ["*%s".format(arguments.length), 
+    //     [arguments].map!(arg => "$%s%s%s".format(arg.length, newline, arg))
+    //     .join(newline)].join(newline).write();
+    // write(newline);
+}
+
+int main ()
+{
+    immutable num_records = 10_000_000;
+
+    foreach (i; 0..num_records)
+    {
+        auto key = "Key%s".format(i);
+        auto value = "Value%s".format(i);
+        setOp("SET", key, value);
+    }
+
+    return 0;
+}
+
+// usage: rdmd proto.d | redis-cli --pipe
