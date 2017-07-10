@@ -13,7 +13,7 @@ public class GeneratorTask(Client) : Task
     private Client client;
 
     /// Delegate to process a command.
-    private bool delegate (Client, cstring) process_dg;
+    private bool delegate (Client, string) process_dg;
 
     /**
         Constructor.
@@ -36,7 +36,7 @@ public class GeneratorTask(Client) : Task
         buffer = Cin.get();
         while (buffer)
         {
-            assert(process_dg(this.client, buffer));
+            assert(process_dg(this.client, buffer.idup));
 
             buffer.length = 0;
             enableStomping(buffer);

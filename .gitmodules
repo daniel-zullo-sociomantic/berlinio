@@ -4,6 +4,15 @@
 [submodule "ocean"]
 	path = submodules/ocean
 	url = git@github.com:sociomantic-tsunami/ocean.git
-[submodule "redis"]
-	path = submodules/redis
-	url = git@github.com:adilbaig/Tiny-Redis.git
+[submodule "vibe-core"]
+	path = submodules/vibe-core
+	url = git@github.com:vibe-d/vibe-core.git
+[submodule "vibe.d"]
+	path = submodules/vibe.d
+	url = git@github.com:rejectedsoftware/vibe.d.git
+[submodule "eventcore"]
+	path = submodules/eventcore
+	url = git@github.com:vibe-d/eventcore.git
+[submodule "taggedalgebraic"]
+	path = submodules/taggedalgebraic
+	url = git@github.com:s-ludwig/taggedalgebraic.git

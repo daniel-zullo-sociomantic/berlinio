@@ -23,7 +23,7 @@ import ocean.task.util.Timer;
 import ocean.transition;
 import ocean.util.log.Log;
 
-import tinyredis.redis;
+import vibe.db.redis.redis;
 
 
 /// Static module logger.
@@ -96,10 +96,11 @@ public class MainTask : Task
         {
             this.ok_ = true;
 
-            Redis client = new Redis();
+            auto client = new RedisClient();
 
             auto task_pool = new ThrottledTaskPool!(OutputTask)(100, 10);
-            auto generator = new GeneratorTask!(Redis)(client, &task_pool.start);
+            auto generator = new GeneratorTask!(RedisClient)(client,
+                &task_pool.start);
             task_pool.throttler.addSuspendable(generator);
 
             theScheduler.schedule(generator);

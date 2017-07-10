@@ -7,7 +7,10 @@ import ocean.transition;
 import ocean.util.log.Log;
 import ocean.io.Stdout;
 
-import tinyredis.redis;
+import vibe.db.redis.redis;
+
+import std.array;
+//import std.functional : toDelegate;
 
 
 /// Static module logger.
@@ -22,10 +25,10 @@ static this ()
 public class OutputTask : Task
 {
     /// The client instance.
-    private Redis client;
+    private RedisClient client;
 
     /// Command to be processed.
-    private cstring command;
+    private string command;
 
     /// Flag to check whether or nor the current command has finished.
     private bool finished_request;
@@ -40,7 +43,7 @@ public class OutputTask : Task
             client = the client instance
             command = the command to be processed
     */
-    public void copyArguments (Redis client, cstring command)
+    public void copyArguments (RedisClient client, string command)
     {
         this.client = client;
 
@@ -64,8 +67,10 @@ public class OutputTask : Task
         {
             this.finished_request = false;
 
-            this.getOutput(this.command);
-            this.notifier();
+            auto channel = split(this.command)[1];
+
+            this.client.getDatabase(0).set(channel, split(this.command)[2]);
+            this.getOutput(channel, split(this.command)[2]);
 
             if (!this.finished_request)
                 this.suspend();
@@ -96,13 +101,16 @@ public class OutputTask : Task
         Params:
             value = the result of the command
     */
-    private void getOutput (in cstring value)
+    private void getOutput (string channel, string message)
     {
-        if (value.length)
+        if (message.length)
         {
-            //assert(this.client.send!(bool)(value));
-            if (this.client.send!(bool)(cast(string)value))
-                this.printRecord(value);
+            //assert(this.client.send!(bool)(message));
+
+            //if (this.client.send!(bool)(cast(string)message))
+
+            //this.printMessage(channel, message);
+            this.notifier();
         }
     }
 
@@ -113,9 +121,9 @@ public class OutputTask : Task
         Params:
             record = record to print
     */
-    private void printRecord (in cstring value)
+    private void printMessage (string channel, string message)
     {
-        //log.info(value);
+        log.info("{}:{}", channel, message);
     }
 
     /**
